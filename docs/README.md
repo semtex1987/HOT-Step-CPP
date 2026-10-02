@@ -6,6 +6,8 @@ link to the page that explains it.
 
 ## For users
 
+RunPod deployment: [Pod template](dev/runpod.md).
+
 | Page | What it covers |
 |---|---|
 | [Getting started](user/getting-started.md) | Download, first launch, first model pack, first song, where files live |

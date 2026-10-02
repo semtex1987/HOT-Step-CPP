@@ -6,6 +6,28 @@
 
 set -e
 
+# The RunPod target keeps generated data on its persistent /workspace volume.
+# The regular runtime target leaves Compose bind mounts in place.
+if [ -n "${HOT_STEP_DATA_ROOT:-}" ]; then
+    mkdir -p "${HOT_STEP_DATA_ROOT}/models" "${HOT_STEP_DATA_ROOT}/adapters" \
+        "${HOT_STEP_DATA_ROOT}/data" "${HOT_STEP_DATA_ROOT}/logs"
+    for mapping in \
+        "/app/models:${HOT_STEP_DATA_ROOT}/models" \
+        "/app/adapters:${HOT_STEP_DATA_ROOT}/adapters" \
+        "/app/server/data:${HOT_STEP_DATA_ROOT}/data" \
+        "/app/logs:${HOT_STEP_DATA_ROOT}/logs"; do
+        link=${mapping%%:*}
+        target=${mapping#*:}
+        if [ -d "$link" ] && [ ! -L "$link" ]; then
+            rmdir "$link" 2>/dev/null || {
+                echo "Cannot link non-empty $link to $target" >&2
+                exit 1
+            }
+        fi
+        ln -sfn "$target" "$link"
+    done
+fi
+
 echo ""
 echo "╔══════════════════════════════════════════╗"
 echo "║     HOT-Step 9000 ⚡ Docker             ║"
@@ -33,7 +55,7 @@ else
     echo "  The build may have failed — check Docker build logs"
 fi
 
-# ── Ensure bind-mount directories exist (in case host dirs are empty) ──
+# ── Ensure data directories exist ───────────────────────────────────
 mkdir -p /app/models /app/adapters /app/server/data
 
 # ── Check for models ────────────────────────────────────────────────
@@ -42,7 +64,7 @@ if [ "$MODEL_COUNT" -gt 0 ]; then
     echo "  Models: ${MODEL_COUNT} GGUF file(s) found"
 else
     echo "  ⚠ No .gguf models found in /app/models"
-    echo "  Place model files in the ./models/ directory on the host"
+    echo "  Download a model pack in the UI or place GGUF files in ${ACESTEPCPP_MODELS:-/app/models}"
 fi
 
 echo ""

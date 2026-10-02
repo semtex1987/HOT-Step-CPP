@@ -227,8 +227,9 @@ A worker keeps pushed datasets under `<TRAINING_DIR>/worker-datasets/<slug>`, wi
 
 ## Other env files
 
-- `.env.docker` is copied to `/app/.env` by the `Dockerfile` and used by
-  `docker-compose.yml`. It points the engine, models and adapters at container paths.
+- `.env.docker` is used by `docker-compose.yml` for local mounts and Windows path
+  mapping. It is not copied into the image. The `runpod` image target uses
+  `/workspace` for persistent data; see the [RunPod guide](runpod.md).
 - `tools/discord-claude/.env.example` configures the Discord bridge tool. The app does not
   read it.
 

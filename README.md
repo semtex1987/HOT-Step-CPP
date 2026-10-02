@@ -104,6 +104,8 @@ For contributors:
 
 ## Building from source
 
+For GPU hosting, see the [RunPod Pod template guide](docs/dev/runpod.md).
+
 Most people should use a [release](#download). To build it yourself, including the engine, the dev loop and portable packaging, follow [Building from source](docs/dev/building.md).
 
 ## Troubleshooting
