@@ -9,6 +9,9 @@ Releases are cut by **pushing a `vX.Y.Z` tag**. The `Release` workflow builds
 every platform and creates a **draft** GitHub Release; you review and publish it.
 A separate `Cache Warm` workflow keeps the engine build cache on `master` so
 release builds take ~10–15 min instead of ~1.5h for the CUDA jobs.
+The separate [RunPod image workflow](../../.github/workflows/runpod-image.yml) publishes
+a Linux container to GHCR after relevant changes on `master` or a manual run. It does
+not create a release or deploy a Pod; see the [RunPod guide](runpod.md).
 
 ## Prerequisites
 

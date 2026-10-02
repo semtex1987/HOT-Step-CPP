@@ -4,7 +4,7 @@ Most users should download a release instead. This page is for contributors: how
 the engine, install the server and UI, run the dev loop, rebuild the engine safely, and
 package a portable release.
 
-For a GPU Pod deployment, see the [RunPod template guide](runpod.md).
+For a GPU Pod deployment and its GitHub Actions image build, see the [RunPod template guide](runpod.md).
 
 ## Prerequisites
 

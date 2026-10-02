@@ -15,6 +15,7 @@ FROM nvidia/cuda:12.8.1-cudnn-devel-ubuntu22.04 AS engine-builder
 # architecture list so one published image can run on different GPU types.
 ARG CUDA_ARCHS="120a"
 ARG ENABLE_TRT=1
+ARG BUILD_JOBS
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake ninja-build build-essential git curl ca-certificates \
@@ -48,7 +49,7 @@ RUN cmake -B build -G Ninja \
     -DGGML_CPU_ALL_VARIANTS=ON \
     -DGGML_BACKEND_DL=ON \
     -DORT_ROOT=/opt/onnxruntime \
-    && cmake --build build --config Release -j"$(nproc)"
+    && cmake --build build --config Release -j"${BUILD_JOBS:-$(nproc)}"
 
 # Stage all binaries + shared libs into /staging for clean COPY
 RUN mkdir -p /staging/engine \
