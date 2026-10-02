@@ -67,7 +67,7 @@ FROM node:22-slim AS ui-builder
 
 WORKDIR /build/ui
 COPY ui/package*.json ./
-RUN npm ci
+RUN npm install
 COPY ui/ .
 RUN npx vite build
 
@@ -85,7 +85,7 @@ WORKDIR /build/server
 COPY server/package*.json ./
 # Install production deps. tsx is in both devDependencies and optionalDependencies,
 # but npm --omit=dev deduplicates and skips it. Install explicitly.
-RUN npm ci --omit=dev && npm install --no-save --no-package-lock tsx
+RUN npm install --omit=dev && npm install tsx
 
 
 # ── Stage 4: Runtime ────────────────────────────────────────────────
